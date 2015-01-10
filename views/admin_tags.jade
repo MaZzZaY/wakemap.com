@@ -1,10 +1,24 @@
 extends layout
 
 block content
+
+  script.
+    var tagName = '#{tagname}';
+    $(function()
+    {
+      $('#refreshTag').click(function()
+      {
+        $.ajax('/admin/ajax/refresh-tag/' + tagName).done(function(data)
+        {
+          alert(data);
+        });
+      });
+    });
+
   table.admin-header-table
     tr
       td
         h3(style="margin:0px;")=tagname
       td
-        span.glyphicon.glyphicon-refresh(aria-hidden="true")
+        span.glyphicon.glyphicon-refresh(aria-hidden="true")#refreshTag
 
