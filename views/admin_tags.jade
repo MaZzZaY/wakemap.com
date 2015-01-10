@@ -1,4 +1,10 @@
 extends layout
 
 block content
-  h2= tagname
+  table.admin-header-table
+    tr
+      td
+        h3(style="margin:0px;")=tagname
+      td
+        span.glyphicon.glyphicon-refresh(aria-hidden="true")
+
