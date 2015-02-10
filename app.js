@@ -11,6 +11,8 @@ var users = require('./routes/users');
 //Обработчики админки
 var tags = require('./routes/admin/tags');
 var adminAjaxRefreshTag = require('./routes/admin/ajax/refresh-tag');
+var adminAjaxGetImage = require('./routes/admin/ajax/get-image');
+var adminReloadTagContent = require('./routes/admin/ajax/reload-tag-content');
 
 var app = express();
 
@@ -18,8 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +32,9 @@ app.use('/users', users);
 
 app.use('/admin/tag/', tags);
 app.use('/admin/ajax/refresh-tag', adminAjaxRefreshTag);
+app.use('/admin/ajax/get-image', adminAjaxGetImage);
+app.use('/admin/ajax/reload-tag-content', adminReloadTagContent);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

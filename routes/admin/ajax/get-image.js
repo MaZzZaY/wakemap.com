@@ -11,6 +11,15 @@ var ig = instaEngine.InstaDriver();
 //считываем параметр name из url
 router.get('/:name', function(req, res) {
     var tagId = req.param("name");
+
+    var Tags = db.Tags();
+
+
+    Tags.findByName(tagId, function(tags)
+    {
+       res.json(tags);
+    });
+    /*
     ig.tag(tagId, function(err, result, remaining, limit) {
 
         var tags = db.Tags();
@@ -20,7 +29,7 @@ router.get('/:name', function(req, res) {
             //возвращаем запись
             res.json(saveTagResult);
         });
-    });
+    });*/
 });
 
 

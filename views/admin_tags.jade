@@ -4,16 +4,42 @@ block content
 
   script.
     var tagName = '#{tagname}';
+    var tagInfo = #{tagInfo};
+
+    var refreshProgressBar = function()
+    {
+
+      var percentComplete =  Math.round((tagInfo.pictures_declined_automatically + tagInfo.pictures_rejected + tagInfo.pictures_approved) / tagInfo.media_count * 100);
+
+      $('#progressBarDone').width(percentComplete.toString() + "%");
+
+    }
+
     $(function()
     {
+
       $('#refreshTag').click(function()
       {
         $.ajax('/admin/ajax/refresh-tag/' + tagName).done(function(data)
         {
+          tagInfo = data;
+          refreshProgressBar();
+        });
+      });
+
+      $('#downloadMedia').click(function()
+      {
+        $("#progressBarDownloadInfo").text(tagInfo.pictures_downloaded.toString() + ' / ' + tagInfo.media_count.toString());
+        $.ajax('/admin/ajax/reload-tag-content/' + tagName).done(function(data)
+        {
+
           alert(data);
         });
       });
+
+      $('#refreshTag').click();
     });
+
 
   table.admin-header-table
     tr
@@ -21,4 +47,12 @@ block content
         h3(style="margin:0px;")=tagname
       td
         span.glyphicon.glyphicon-refresh(aria-hidden="true")#refreshTag
+
+  .progress
+    .progress-bar.progress-bar-success(style="width:0%")#progressBarDone
+    .progress-bar.progress-bar-info(style="width:10%")#progressBarDownload
+      span(style="color:black")#progressBarDownloadInfo
+
+   button.btn.btn-primary#downloadMedia
+    | Reload Content
 

@@ -1,10 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-//инициализируем драйвер инстаграмма
-var ig = require('instagram-node').instagram();
-ig.use({ client_id: '661c07c94f964b4ebf519c3c28f878d1',
-  client_secret: '43fb50e0a7564d33ac60d1cea78ba292' });
+//подключаем прослойку для БД
+var db = require('../../bin/mongoose');
 
 //создаем переменную для определения параметров возврата
 var render = { tagname : ''};
@@ -13,9 +11,17 @@ var render = { tagname : ''};
 router.get('/:name', function(req, res) {
   var tagId = req.param("name");
   render.tagname = tagId;
-  ig.tag_media_recent('tagId', function(err, result, remaining, limit) {
+  var tags = db.Tags();
+  tags.findByName(tagId, function(result)
+  {
+    if (result != null && result.length==1)
+    {
+      render.tagInfo = result [ 0 ];
+    }
     res.render('admin_tags', render);
   });
+
+
 });
 
 
